@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LoginWithAnimation</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Mau berbagi curahan hati anda? Di sini aja!</string>
+    <string name="title_welcome_page">Selamat datang di SideStoryApp</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Sudah Siap Berbagi Cerita?</string>
+    <string name="name">Nama</string>
+    <string name="message_main_page">Selamat Berbagi Cerita.</string>
+    <string name="greeting">Halo %1$s,</string>
+    <string name="logout">Keluar</string>
+    <string name="required_name">Masukan Nama</string>
+    <string name="submit">submit</string>
+    <string name="item_image">Desc</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="description">Isi Teks Disini</string>
+    <string name="isi_deskripsi"></string>
+    <string name="event_image_desc">gambar</string>
+    <string name="title_activity_maps">Maps Activity</string>
+    <string name="sidestoryapp">SideStoryApp</string>
+</resources>
