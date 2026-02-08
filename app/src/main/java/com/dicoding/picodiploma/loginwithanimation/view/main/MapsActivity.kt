@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.loginwithanimation.view.main
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.dicoding.picodiploma.loginwithanimation.data.UploadRepository
 import com.dicoding.picodiploma.loginwithanimation.response.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.response.StoryResponse
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.story.StoryDetailActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -31,6 +33,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.jvm.java
+import androidx.core.graphics.scale
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -42,13 +46,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://story-api.dicoding.dev/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        apiService = retrofit.create(ApiService::class.java)
+        apiService = ApiConfig.getMapApiService()
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -122,31 +120,53 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun displayMarkersOnMap(stories: List<ListStoryItem>) {
+        mMap.clear()
+
         for (story in stories) {
             if (story.lat != null && story.lon != null) {
                 val location = LatLng(story.lat, story.lon)
+
                 val markerOptions = MarkerOptions()
                     .position(location)
                     .title(story.name)
                     .snippet(story.description)
 
-                story.photoUrl?.let {
-                    val imageUrl = it
+                if (story.photoUrl != null) {
                     Glide.with(this)
                         .asBitmap()
-                        .load(imageUrl)
+                        .load(story.photoUrl)
                         .into(object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                val scaledBitmap = Bitmap.createScaledBitmap(resource, 100, 100, false)
-                                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(scaledBitmap))
-                                mMap.addMarker(markerOptions)
+                            override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap>?
+                            ) {
+                                val scaleBitmap =
+                                    resource.scale(100, 100, false)
+                                val marker = mMap.addMarker(
+                                    markerOptions.icon(
+                                        BitmapDescriptorFactory.fromBitmap(scaleBitmap)
+                                    )
+                                )
+                                marker?.tag = story.id
                             }
+
                             override fun onLoadCleared(placeholder: Drawable?) {}
                         })
-                } ?: run {
-                    mMap.addMarker(markerOptions)
+                        } else {
+                            val marker = mMap.addMarker(markerOptions)
+                            marker?.tag = story.id
+                        }
+                    }
                 }
-            }
-        }
+
+            mMap.setOnMarkerClickListener { marker ->
+                val storyId = marker.tag as? String
+                storyId?.let {
+                    val intent = Intent(this, StoryDetailActivity::class.java)
+                    intent.putExtra(StoryDetailActivity.EXTRA_ID, it)
+                    startActivity(intent)
+                }
+                true
+                }
     }
 }

@@ -19,11 +19,11 @@
 
         <ImageView
             android:id="@+id/Storyimage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitCenter"
+            android:layout_width="378dp"
+            android:layout_height="372dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/event_image_desc" />
+            android:contentDescription="@string/event_image_desc"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/Storyname"
