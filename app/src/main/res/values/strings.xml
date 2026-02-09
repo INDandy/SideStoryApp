@@ -25,4 +25,5 @@
     <string name="event_image_desc">gambar</string>
     <string name="title_activity_maps">Maps Activity</string>
     <string name="sidestoryapp">SideStoryApp</string>
+    <string name="sidestoryappfeed">SideStoryApp</string>
 </resources>

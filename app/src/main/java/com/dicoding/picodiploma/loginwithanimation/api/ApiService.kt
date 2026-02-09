@@ -36,7 +36,6 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): Call<DetailResponse>
-
     @Multipart
     @POST("stories")
     suspend fun uploadImage(
@@ -46,8 +45,6 @@ interface ApiService {
         @Part("lat") lat: Double? = null,
         @Part("lon") lon: Double? = null
     ): AddStoryResponse
-
-
 
     @GET("v1/stories?location=1")
     fun getStoriesLocation(
